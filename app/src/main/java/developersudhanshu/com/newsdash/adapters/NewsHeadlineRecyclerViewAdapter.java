@@ -20,6 +20,11 @@ public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHe
 
     private Context mContext;
     private ArrayList<NewsFeedModel> mNewsFeeds;
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public NewsHeadlineRecyclerViewAdapter(Context context, ArrayList<NewsFeedModel> news) {
         this.mContext = context;
@@ -34,7 +39,7 @@ public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
         Picasso.with(mContext)
                 .load(mNewsFeeds.get(i).getImageUrl())
@@ -44,6 +49,13 @@ public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHe
 
         viewHolder.newsHeadline.setText(mNewsFeeds.get(i).getName());
         viewHolder.newsDate.setText(mNewsFeeds.get(i).getDate());
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(i);
+            }
+        });
     }
 
     @Override
@@ -64,5 +76,9 @@ public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHe
             newsDate = itemView.findViewById(R.id.tv_news_date);
             newsImage = itemView.findViewById(R.id.img_view_news_image);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(int position);
     }
 }

@@ -15,6 +15,9 @@ public class Constants {
 
     public static final String API_KEY = BuildConfig.API_KEY;
 
+    // Intent Keys
+    public static final String NEWS_FEED_INTENT_EXTRA_KEY = "NewsFeedKey";
+
     // API Interface constants
     public static final String TOP_HEADLINES_API_REQUEST = "top-headlines";
     public static final String EVERYTHING_API_REQUEST = "everything";

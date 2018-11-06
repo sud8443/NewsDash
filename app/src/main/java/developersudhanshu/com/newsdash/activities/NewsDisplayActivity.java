@@ -1,4 +1,4 @@
-package developersudhanshu.com.newsdash;
+package developersudhanshu.com.newsdash.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.fragments.TopHeadlinesFragment;
 
 public class NewsDisplayActivity extends AppCompatActivity {

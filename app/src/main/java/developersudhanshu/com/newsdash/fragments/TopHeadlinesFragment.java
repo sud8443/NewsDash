@@ -1,5 +1,6 @@
 package developersudhanshu.com.newsdash.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import developersudhanshu.com.newsdash.R;
+import developersudhanshu.com.newsdash.activities.NewsDetailDisplayActivity;
 import developersudhanshu.com.newsdash.adapters.NewsHeadlineRecyclerViewAdapter;
 import developersudhanshu.com.newsdash.models.Articles;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
@@ -60,7 +62,11 @@ public class TopHeadlinesFragment extends Fragment {
                                 for(Articles articles: response.body().getArticles()){
                                     mNewsFeeds.add(new NewsFeedModel(articles.getTitle(),
                                                     articles.getPublishedAt(),
-                                                    articles.getUrlToImage()));
+                                                    articles.getUrlToImage(),
+                                                    articles.getAuthor(),
+                                                    articles.getContent(),
+                                                    articles.getSource().getName(),
+                                                    articles.getUrl()));
                                 }
                                 Log.d("News Data:", response.body().toString());
                                 adapter.notifyDataSetChanged();
@@ -81,6 +87,15 @@ public class TopHeadlinesFragment extends Fragment {
         mNewsFeeds = new ArrayList<>();
 
         adapter = new NewsHeadlineRecyclerViewAdapter(getActivity(), mNewsFeeds);
+
+        adapter.setOnItemClickListener(new NewsHeadlineRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Intent i = new Intent(getContext(), NewsDetailDisplayActivity.class);
+                i.putExtra(Constants.NEWS_FEED_INTENT_EXTRA_KEY, mNewsFeeds.get(position));
+                startActivity(i);
+            }
+        });
 
         topHeadlinesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
                 false));

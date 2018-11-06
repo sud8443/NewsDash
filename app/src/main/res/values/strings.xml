@@ -4,6 +4,12 @@
     <string name="title_your_feed">Your Feed</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_search">Search</string>
+    <string name="title_mark_favorite">Mark Favorite</string>
+    <string name="title_share">Share</string>
+    <string name="title_open_in_browser">View Story</string>
 
     <string name="news_image_content_desc">News Headline Image</string>
+    <string name="date_label">Date</string>
+    <string name="author_label">Author</string>
+    <string name="description_label">Description</string>
 </resources>
