@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.NewsDetailDisplayActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+            android:theme="@style/NewsDetailsDisplayTheme"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
