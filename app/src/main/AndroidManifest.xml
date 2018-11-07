@@ -14,18 +14,23 @@
         <activity
             android:name=".activities.NewsDisplayActivity"
             android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activities.NewsDetailDisplayActivity"
+            android:theme="@style/NewsDetailsDisplayTheme" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".activities.UsersInterestsActivity" />
+        <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NewsDetailDisplayActivity"
-            android:theme="@style/NewsDetailsDisplayTheme"></activity>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

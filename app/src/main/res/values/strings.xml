@@ -13,6 +13,9 @@
     <string name="author_label">Author</string>
     <string name="description_label">Description</string>
 
+    // Image View content description
+    <string name="content_description_user_interest_image">Interest Type item image</string>
+
     // Empty Data messages
     <string name="no_description_message">No description available</string>
     <string name="no_author_message">Author unknown</string>
