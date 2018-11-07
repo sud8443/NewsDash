@@ -12,4 +12,9 @@
     <string name="date_label">Date</string>
     <string name="author_label">Author</string>
     <string name="description_label">Description</string>
+
+    // Empty Data messages
+    <string name="no_description_message">No description available</string>
+    <string name="no_author_message">Author unknown</string>
+    <string name="no_source_available">Unknown source</string>
 </resources>

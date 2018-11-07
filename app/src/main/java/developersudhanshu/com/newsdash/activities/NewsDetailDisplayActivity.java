@@ -20,7 +20,7 @@ import developersudhanshu.com.newsdash.utility.Constants;
 
 public class NewsDetailDisplayActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView newsHeadline, newsDate, newsAuthor;
+    private TextView newsHeadline, newsDate, newsAuthor, newsSource;
     private ImageView newsImage;
     private TextView newsDescription;
     private Button shareStory, viewFullStory, markFavoriteStory;
@@ -61,8 +61,21 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
 
         newsHeadline.setText(model.getName());
         newsDate.setText(model.getDate());
-        newsAuthor.setText(model.getAuthorName());
-        newsDescription.setText(model.getDescription());
+        if (!TextUtils.isEmpty(model.getAuthorName())) {
+            newsAuthor.setText(model.getAuthorName());
+        } else {
+            newsAuthor.setText(getResources().getString(R.string.no_author_message));
+        }
+        if (!TextUtils.isEmpty(model.getDescription())) {
+            newsDescription.setText(model.getDescription());
+        } else {
+            newsDescription.setText(getResources().getString(R.string.no_description_message));
+        }
+        if (!TextUtils.isEmpty(model.getNewsSource())) {
+            newsSource.setText("Source: " + model.getNewsSource());
+        } else {
+            newsSource.setText(getResources().getString(R.string.no_source_available));
+        }
 
         // Saving the news URL to be shared and opened in Browser
         newsUrl = model.getNewsUrl();
@@ -81,6 +94,7 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
         newsAuthor = findViewById(R.id.tv_author_act_news_detail_display);
         newsDescription = findViewById(R.id.tv_desc_act_news_detail_display);
         newsImage = findViewById(R.id.img_view_act_news_detail);
+        newsSource = findViewById(R.id.tv_source_act_news_detail_display);
 
         markFavoriteStory = findViewById(R.id.btn_mark_fav_act_news_details_display);
         shareStory = findViewById(R.id.btn_share_act_news_details_display);
