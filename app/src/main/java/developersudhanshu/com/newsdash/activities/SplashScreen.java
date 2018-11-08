@@ -19,6 +19,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 if(Utility.getIsFirstLaunch(SplashScreen.this)) {
+                    Utility.setIsFirstLaunch(SplashScreen.this, false);
                     Intent i = new Intent(SplashScreen.this, UsersInterestsActivity.class);
                     startActivity(i);
                 } else {

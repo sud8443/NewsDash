@@ -16,4 +16,10 @@ public interface APIInterface {
                                                    @Query(Constants.QUERY_PARAM_TO_DATE) String toDate);
 
 
+    @GET(Constants.EVERYTHING_API_REQUEST)
+    Call<NewsHeadlineResponse> getNewsHeadlineOfQuery(@Query(Constants.QUERY_PARAM_QUERY) String query,
+                                                      @Query(Constants.QUERY_PARAM_API_KEY) String apiKey,
+                                                      @Query(Constants.QUERY_PARAM_LANGUAGE) String language,
+                                                      @Query(Constants.QUERY_PARAM_FROM_DATE) String fromDate,
+                                                      @Query(Constants.QUERY_PARAM_TO_DATE) String toDate);
 }
