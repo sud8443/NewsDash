@@ -45,6 +45,7 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
 
         setUpViews(view);
         selectedChoice = choiceOne.getText().toString();
+        apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
         makeNetworkRequestForNewsHeadlines(selectedChoice);
 
         return view;
@@ -115,7 +116,6 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
 
     private void makeNetworkRequestForNewsHeadlines(String selectedChoice) {
 
-        apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
         apiInterface.getNewsHeadlineOfQuery(selectedChoice, Constants.API_KEY,
                 "en", null, null).enqueue(new Callback<NewsHeadlineResponse>() {
             @Override
