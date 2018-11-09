@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,12 +32,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TopHeadlinesFragment extends Fragment {
+public class TopHeadlinesFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView topHeadlinesRecyclerView;
     private NewsHeadlineRecyclerViewAdapter adapter;
     private ArrayList<NewsFeedModel> mNewsFeeds;
     private APIInterface apiInterface;
+    private LinearLayout loadingLayout;
+    private TextView loadingLayoutMessage;
+    private ProgressBar loadingBar;
+    private ImageView loadingLayoutImage;
+    private Button retryLoadingButton;
 
     public TopHeadlinesFragment(){
 
@@ -44,7 +54,21 @@ public class TopHeadlinesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_headlines, container, false);
 
+        loadingLayout = view.findViewById(R.id.ll_loading_layout_frag);
+        loadingLayoutImage = view.findViewById(R.id.img_view_error_img_frag);
+        loadingBar = view.findViewById(R.id.prg_bar_frag);
+        loadingLayoutMessage = view.findViewById(R.id.tv_message_ll_frag);
+        retryLoadingButton = view.findViewById(R.id.btn_retry_loading_frag);
+
+        retryLoadingButton.setOnClickListener(this);
+
+        retryLoadingButton.setVisibility(View.GONE);
+        loadingLayout.setVisibility(View.VISIBLE);
+        loadingLayoutImage.setVisibility(View.GONE);
+        loadingLayoutMessage.setText(getResources().getString(R.string.loading_news_feeds));
         setUpRecyclerView(view);
+
+        apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
 
         getTopHeadlines();
 
@@ -52,13 +76,13 @@ public class TopHeadlinesFragment extends Fragment {
     }
 
     private void getTopHeadlines() {
-        apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
 
         apiInterface.getTopNewsHeadlines("in", Constants.API_KEY, "en", null, null)
                     .enqueue(new Callback<NewsHeadlineResponse>() {
                         @Override
                         public void onResponse(Call<NewsHeadlineResponse> call, Response<NewsHeadlineResponse> response) {
                             if (response.isSuccessful()) {
+                                loadingLayout.setVisibility(View.INVISIBLE);
                                 for(Articles articles: response.body().getArticles()){
                                     mNewsFeeds.add(new NewsFeedModel(articles.getTitle(),
                                                     articles.getPublishedAt(),
@@ -70,14 +94,23 @@ public class TopHeadlinesFragment extends Fragment {
                                 }
                                 Log.d("News Data:", response.body().toString());
                                 adapter.notifyDataSetChanged();
+                            } else {
+                                retryLoading();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<NewsHeadlineResponse> call, Throwable t) {
-
+                            retryLoading();
                         }
                     });
+    }
+
+    private void retryLoading() {
+        loadingBar.setVisibility(View.GONE);
+        loadingLayoutImage.setVisibility(View.VISIBLE);
+        loadingLayoutMessage.setText(getResources().getString(R.string.error_loading_feeds));
+        retryLoadingButton.setVisibility(View.VISIBLE);
     }
 
     private void setUpRecyclerView(View view) {
@@ -100,5 +133,18 @@ public class TopHeadlinesFragment extends Fragment {
         topHeadlinesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
                 false));
         topHeadlinesRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_retry_loading_frag:
+                loadingLayoutMessage.setText(getResources().getString(R.string.loading_news_feeds));
+                loadingBar.setVisibility(View.VISIBLE);
+                retryLoadingButton.setVisibility(View.GONE);
+                loadingLayoutImage.setVisibility(View.GONE);
+                getTopHeadlines();
+                break;
+        }
     }
 }

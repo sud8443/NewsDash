@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
+import developersudhanshu.com.newsdash.utility.Utility;
 
 public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHeadlineRecyclerViewAdapter.ViewHolder> {
 
@@ -48,7 +49,7 @@ public class NewsHeadlineRecyclerViewAdapter extends RecyclerView.Adapter<NewsHe
                 .into(viewHolder.newsImage);
 
         viewHolder.newsHeadline.setText(mNewsFeeds.get(i).getName());
-        viewHolder.newsDate.setText(mNewsFeeds.get(i).getDate());
+        viewHolder.newsDate.setText(Utility.getDateInReadableFormat(mNewsFeeds.get(i).getDate()));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

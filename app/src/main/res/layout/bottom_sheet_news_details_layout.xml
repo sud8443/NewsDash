@@ -11,8 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="@string/title_mark_favorite"
-        android:drawableTop="@drawable/ic_favorite_24dp" />
+        android:text="@string/title_mark_favorite" />
 
     <Button
         android:id="@+id/btn_share_act_news_details_display"

@@ -16,7 +16,7 @@
             android:drawableStart="@drawable/ic_search_24dp"
             android:drawableTint="@color/darkBlue"
             android:textColor="@android:color/black"
-            android:hint="Enter search query here"
+            android:hint="@string/search_query_hint"
             android:layout_width="0dp"
             android:inputType="text"
             android:layout_height="wrap_content"
@@ -25,9 +25,12 @@
             android:id="@+id/btn_search_frag_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/search_btn_label"
             android:textAllCaps="false"/>
     </LinearLayout>
+
+    <include
+        layout="@layout/loading_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_searched_news_feeds_frag_search"

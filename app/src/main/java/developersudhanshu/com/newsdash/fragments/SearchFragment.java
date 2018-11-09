@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,6 +42,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private NewsHeadlineRecyclerViewAdapter adapter;
     private ArrayList<NewsFeedModel> mNewsFeed;
     private APIInterface apiInterface;
+    private LinearLayout loadingLayout;
+    private TextView loadingLayoutMessage;
+    private ProgressBar loadingBar;
+    private ImageView loadingLayoutImage;
+    private Button retryLoadingButton;
 
     @Nullable
     @Override
@@ -45,9 +54,28 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         setUpViews(view);
+
+        loadingLayout = view.findViewById(R.id.ll_loading_layout_frag);
+        loadingLayoutImage = view.findViewById(R.id.img_view_error_img_frag);
+        loadingBar = view.findViewById(R.id.prg_bar_frag);
+        loadingLayoutMessage = view.findViewById(R.id.tv_message_ll_frag);
+        retryLoadingButton = view.findViewById(R.id.btn_retry_loading_frag);
+
+        retryLoadingButton.setOnClickListener(this);
+
+        setLoadingLayoutVisibility();
         apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
         loadSearchedQueryNewsFeeds("latest");
         return view;
+    }
+
+    private void setLoadingLayoutVisibility() {
+        retryLoadingButton.setVisibility(View.GONE);
+        loadingBar.setVisibility(View.VISIBLE);
+        loadingLayout.setVisibility(View.VISIBLE);
+        loadingLayoutImage.setVisibility(View.GONE);
+        loadingLayoutMessage.setText(getResources().getString(R.string.loading_news_feeds));
+        searchResultsRecyclerView.setVisibility(View.GONE);
     }
 
     private void setUpViews(View view) {
@@ -79,7 +107,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_search_frag_search:
+                setLoadingLayoutVisibility();
                 verifySearchQueryAndMakeRequest();
+                break;
+            case R.id.btn_retry_loading_frag:
+                loadingLayoutImage.setVisibility(View.GONE);
+                loadingBar.setVisibility(View.VISIBLE);
+                retryLoadingButton.setVisibility(View.GONE);
+                loadingLayoutMessage.setText(getResources().getString(R.string.loading_news_feeds));
+                String searchQuery = String.valueOf(searchQueryText.getText());
+
+                if (!TextUtils.isEmpty(searchQuery)) {
+                    loadSearchedQueryNewsFeeds(searchQuery);
+                } else {
+                    loadSearchedQueryNewsFeeds("latest");
+                }
                 break;
         }
     }
@@ -102,6 +144,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<NewsHeadlineResponse> call, Response<NewsHeadlineResponse> response) {
                 if (response.isSuccessful()) {
                     mNewsFeed.clear();
+                    loadingLayout.setVisibility(View.INVISIBLE);
+                    searchResultsRecyclerView.setVisibility(View.VISIBLE);
                     for (Articles article: response.body().getArticles()) {
                         mNewsFeed.add(new NewsFeedModel(article.getTitle()
                                 ,article.getPublishedAt(), article.getUrlToImage(),
@@ -109,13 +153,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                 article.getSource().getName(), article.getUrl()));
                     }
                     adapter.notifyDataSetChanged();
+                } else {
+                    displayRetryLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<NewsHeadlineResponse> call, Throwable t) {
-
+                displayRetryLayout();
             }
         });
+    }
+
+    private void displayRetryLayout() {
+        retryLoadingButton.setVisibility(View.VISIBLE);
+        loadingBar.setVisibility(View.GONE);
+        loadingLayoutImage.setVisibility(View.VISIBLE);
+        loadingLayoutMessage.setText(getResources().getString(R.string.error_loading_feeds));
     }
 }

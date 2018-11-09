@@ -15,6 +15,17 @@
 
     // Image View content description
     <string name="content_description_user_interest_image">Interest Type item image</string>
+    <string name="no_favorites_found">No Favorites</string>
+    <string name="loading_news_feeds">Loading feeds…</string>
+    <string name="error_loading_feeds">Error occurred</string>
+
+    // Button text
+    <string name="retry_btn_text">Retry</string>
+    <string name="search_query_hint">Enter search query here</string>
+    <string name="search_btn_label">Search</string>
+    <string name="choice_one">Choice 1</string>
+    <string name="choice_two">Choice 2</string>
+    <string name="choice_three">Choice 3</string>
 
     // Empty Data messages
     <string name="no_description_message">No description available</string>

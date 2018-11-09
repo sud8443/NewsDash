@@ -18,10 +18,10 @@ import developersudhanshu.com.newsdash.fragments.YourFeedFragment;
 public class NewsDisplayActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
-    private static TopHeadlinesFragment topHeadlinesFragment;
-    private static YourFeedFragment yourFeedFragment;
-    private static FavoritesFragment favoritesFragment;
-    private static SearchFragment searchFragment;
+    private TopHeadlinesFragment topHeadlinesFragment;
+    private YourFeedFragment yourFeedFragment;
+    private FavoritesFragment favoritesFragment;
+    private SearchFragment searchFragment;
     private static String currentlyDisplayedFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

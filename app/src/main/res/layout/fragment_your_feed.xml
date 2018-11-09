@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/BottomSheetButtonStyle"
-            android:text="Choice 1"/>
+            android:text="@string/choice_one"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/BottomSheetButtonStyle"
-            android:text="Choice 2"/>
+            android:text="@string/choice_two"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -38,8 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/BottomSheetButtonStyle"
-            android:text="Choice 3"/>
+            android:text="@string/choice_three"/>
     </LinearLayout>
+
+    <include
+        layout="@layout/loading_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_news_feed_frag_your_feed"

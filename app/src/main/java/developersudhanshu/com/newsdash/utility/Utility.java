@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-
-import developersudhanshu.com.newsdash.models.UserInterestModel;
+import java.util.Date;
 
 public class Utility {
 
@@ -50,6 +46,18 @@ public class Utility {
                 add(Constants.CATEGORY_TRAVEL);
             }};
         }
+    }
+
+    public static String getDateInReadableFormat(String date) {
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        Date d = null;
+        try {
+            d = inputDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d != null ? outputDateFormat.format(d):date;
     }
 
     public static void setUserInterests(Context context, ArrayList<String> userChoices) {

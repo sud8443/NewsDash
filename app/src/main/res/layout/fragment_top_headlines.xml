@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include
+        layout="@layout/loading_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_frag_top_headlines"
         android:layout_width="0dp"
