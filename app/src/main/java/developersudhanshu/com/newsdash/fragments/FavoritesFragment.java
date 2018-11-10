@@ -2,6 +2,7 @@ package developersudhanshu.com.newsdash.fragments;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import java.util.List;
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.activities.NewsDetailDisplayActivity;
 import developersudhanshu.com.newsdash.adapters.NewsHeadlineRecyclerViewAdapter;
+import developersudhanshu.com.newsdash.architecture_comp.FavoritesFragmentViewModel;
 import developersudhanshu.com.newsdash.database.AppDatabase;
 import developersudhanshu.com.newsdash.database.NewsHeadlineEntity;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
@@ -30,7 +32,6 @@ public class FavoritesFragment extends Fragment {
     private RecyclerView favouritesRecyclerView;
     private ArrayList<NewsFeedModel> mNewsFeeds;
     private NewsHeadlineRecyclerViewAdapter adapter;
-    private AppDatabase mDb;
     private LinearLayout noFavoritesLayout;
 
     @Nullable
@@ -46,10 +47,9 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void loadAllFavoriteNewsFeed() {
-        mDb = AppDatabase.getInstance(getContext());
 
-        LiveData<List<NewsHeadlineEntity>> news = mDb.getNewsHeadlinesDao().loadAllNewsHeadlines();
-        news.observe(getActivity() != null ? getActivity(): getViewLifecycleOwner(), new Observer<List<NewsHeadlineEntity>>() {
+        FavoritesFragmentViewModel viewModel = ViewModelProviders.of(getActivity()).get(FavoritesFragmentViewModel.class);
+        viewModel.getmFeeds().observe(getActivity() != null ? getActivity(): getViewLifecycleOwner(), new Observer<List<NewsHeadlineEntity>>() {
             @Override
             public void onChanged(@Nullable List<NewsHeadlineEntity> newsHeadlineEntities) {
                 if (newsHeadlineEntities != null) {

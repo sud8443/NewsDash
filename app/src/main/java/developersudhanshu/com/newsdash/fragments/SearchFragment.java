@@ -1,5 +1,6 @@
 package developersudhanshu.com.newsdash.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.activities.NewsDetailDisplayActivity;
 import developersudhanshu.com.newsdash.adapters.NewsHeadlineRecyclerViewAdapter;
+import developersudhanshu.com.newsdash.architecture_comp.SearchFragmentViewModel;
+import developersudhanshu.com.newsdash.architecture_comp.SearchFragmentViewModelFactory;
 import developersudhanshu.com.newsdash.models.Articles;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
 import developersudhanshu.com.newsdash.models.NewsHeadlineResponse;
@@ -47,6 +50,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ProgressBar loadingBar;
     private ImageView loadingLayoutImage;
     private Button retryLoadingButton;
+    private SearchFragmentViewModel viewModel;
 
     @Nullable
     @Override
@@ -65,7 +69,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         setLoadingLayoutVisibility();
         apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
-        loadSearchedQueryNewsFeeds("latest");
+
+        SearchFragmentViewModelFactory factory = new SearchFragmentViewModelFactory(mNewsFeed);
+        viewModel = ViewModelProviders.of(getActivity(), factory).get(SearchFragmentViewModel.class);
+        if (viewModel.getmNewsFeeds() == null || viewModel.getmNewsFeeds().size() == 0) {
+            String searchQuery = searchQueryText.getText().toString();
+            if (TextUtils.isEmpty(searchQuery))
+                searchQuery = "latest";
+            loadSearchedQueryNewsFeeds(searchQuery);
+        } else {
+            mNewsFeed.clear();
+            mNewsFeed.addAll(viewModel.getmNewsFeeds());
+            adapter.notifyDataSetChanged();
+            loadingLayout.setVisibility(View.INVISIBLE);
+            searchResultsRecyclerView.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -146,12 +164,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     mNewsFeed.clear();
                     loadingLayout.setVisibility(View.INVISIBLE);
                     searchResultsRecyclerView.setVisibility(View.VISIBLE);
+                    ArrayList<NewsFeedModel> feeds = new ArrayList<>();
                     for (Articles article: response.body().getArticles()) {
-                        mNewsFeed.add(new NewsFeedModel(article.getTitle()
+                        feeds.add(new NewsFeedModel(article.getTitle()
                                 ,article.getPublishedAt(), article.getUrlToImage(),
                                 article.getAuthor(), article.getContent(),
                                 article.getSource().getName(), article.getUrl()));
                     }
+                    viewModel.setmNewsFeeds(feeds);
+                    mNewsFeed.addAll(viewModel.getmNewsFeeds());
                     adapter.notifyDataSetChanged();
                 } else {
                     displayRetryLayout();

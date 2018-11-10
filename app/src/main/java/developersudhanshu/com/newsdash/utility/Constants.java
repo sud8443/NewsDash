@@ -29,7 +29,10 @@ public abstract class Constants {
 
     public static final String API_KEY = BuildConfig.API_KEY;
     public static final String COUNTRY_INDIA = "in";
-    public static final String LANGUANGE_ENGLISH = "en";
+    public static final String LANGUAGE_ENGLISH = "en";
+
+    public static final String CURRENTLY_DISPLAYED_FRAGMENT_KEY = "CurrentlyDisplayedFragment";
+    public static final String FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY = "YourFeedsSelectedChoice";
 
     // Shared Preferences constants and key
     public static final String SHARED_PREFERENCE_NAME = "NewsDashSharedPreference";

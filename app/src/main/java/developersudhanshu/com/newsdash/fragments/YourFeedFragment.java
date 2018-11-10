@@ -1,5 +1,6 @@
 package developersudhanshu.com.newsdash.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.activities.NewsDetailDisplayActivity;
 import developersudhanshu.com.newsdash.adapters.NewsHeadlineRecyclerViewAdapter;
+import developersudhanshu.com.newsdash.architecture_comp.YourFeedsFragmentViewModel;
+import developersudhanshu.com.newsdash.architecture_comp.YourFeedsFragmentViewModelFactory;
 import developersudhanshu.com.newsdash.models.Articles;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
 import developersudhanshu.com.newsdash.models.NewsHeadlineResponse;
@@ -46,6 +49,7 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
     private ProgressBar loadingBar;
     private ImageView loadingLayoutImage;
     private Button retryLoadingButton;
+    private YourFeedsFragmentViewModel viewModel;
 
     @Nullable
     @Override
@@ -53,9 +57,25 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_your_feed, container, false);
 
         setUpViews(view);
-        selectedChoice = choiceOne.getText().toString();
+        if (savedInstanceState == null) {
+            selectedChoice = choiceOne.getText().toString();
+        } else {
+            selectedChoice = savedInstanceState.getString(Constants.FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY);
+        }
+        changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.yellow));
         apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
-        makeNetworkRequestForNewsHeadlines(selectedChoice);
+
+        YourFeedsFragmentViewModelFactory factory = new YourFeedsFragmentViewModelFactory(mNewsFeeds);
+        viewModel = ViewModelProviders.of(getActivity(), factory).get(YourFeedsFragmentViewModel.class);
+        if (viewModel.getmNewsFeeds() == null || viewModel.getmNewsFeeds().size() == 0) {
+            makeNetworkRequestForNewsHeadlines(selectedChoice);
+        } else{
+            mNewsFeeds.clear();
+            mNewsFeeds.addAll(viewModel.getmNewsFeeds());
+            adapter.notifyDataSetChanged();
+            loadingLayout.setVisibility(View.INVISIBLE);
+            yourFeedsRecyclerView.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -119,28 +139,44 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
         yourFeedsRecyclerView.setVisibility(View.GONE);
     }
 
+    private void changeButtonBackgroundToSelected(String selectedChoice, int colorCode) {
+        if (selectedChoice.equals(choiceOne.getText().toString())) {
+            choiceOne.setBackgroundColor(colorCode);
+        }else if (selectedChoice.equals(choiceTwo.getText().toString())) {
+            choiceTwo.setBackgroundColor(colorCode);
+        } else {
+            choiceThree.setBackgroundColor(colorCode);
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_user_interest_one_frag_your_feed:
                 if (!selectedChoice.equals(choiceOne.getText().toString())) {
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.colorAccentGrey));
                     selectedChoice = choiceOne.getText().toString();
                     setLoadingLayoutVisibility();
                     makeNetworkRequestForNewsHeadlines(selectedChoice);
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.yellow));
                 }
                 break;
             case R.id.btn_user_interest_two_frag_your_feed:
                 if (!selectedChoice.equals(choiceTwo.getText().toString())) {
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.colorAccentGrey));
                     selectedChoice = choiceTwo.getText().toString();
                     setLoadingLayoutVisibility();
                     makeNetworkRequestForNewsHeadlines(selectedChoice);
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.yellow));
                 }
                 break;
             case R.id.btn_user_interest_three_frag_your_feed:
                 if (!selectedChoice.equals(choiceThree.getText().toString())) {
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.colorAccentGrey));
                     selectedChoice = choiceThree.getText().toString();
                     setLoadingLayoutVisibility();
                     makeNetworkRequestForNewsHeadlines(selectedChoice);
+                    changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.yellow));
                 }
                 break;
             case R.id.btn_retry_loading_frag:
@@ -153,23 +189,32 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Constants.FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY, selectedChoice);
+    }
+
     private void makeNetworkRequestForNewsHeadlines(String selectedChoice) {
 
         apiInterface.getNewsHeadlineOfQuery(selectedChoice, Constants.API_KEY,
-                "en", null, null).enqueue(new Callback<NewsHeadlineResponse>() {
+                Constants.LANGUAGE_ENGLISH, null, null).enqueue(new Callback<NewsHeadlineResponse>() {
             @Override
             public void onResponse(Call<NewsHeadlineResponse> call, Response<NewsHeadlineResponse> response) {
                 if (response.isSuccessful()) {
                     // First clearing all the previous data
                     mNewsFeeds.clear();
+                    ArrayList<NewsFeedModel> feeds = new ArrayList<>();
                     loadingLayout.setVisibility(View.INVISIBLE);
                     yourFeedsRecyclerView.setVisibility(View.VISIBLE);
                     for (Articles article: response.body().getArticles()) {
-                        mNewsFeeds.add(new NewsFeedModel(article.getTitle()
+                        feeds.add(new NewsFeedModel(article.getTitle()
                                 ,article.getPublishedAt(), article.getUrlToImage(),
                                 article.getAuthor(), article.getContent(),
                                 article.getSource().getName(), article.getUrl()));
                     }
+                    viewModel.setmNewsFeeds(feeds);
+                    mNewsFeeds.addAll(viewModel.getmNewsFeeds());
                     adapter.notifyDataSetChanged();
                 } else {
                     displayRetryLayout();

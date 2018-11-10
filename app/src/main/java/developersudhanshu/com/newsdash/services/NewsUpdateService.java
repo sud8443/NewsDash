@@ -58,7 +58,7 @@ public class NewsUpdateService extends IntentService {
         String inputLine;
 
         try {
-            String urlString = APIClient.BASE_URL + Constants.TOP_HEADLINES_API_REQUEST + "?" + Constants.QUERY_PARAM_API_KEY + "=" + Constants.API_KEY + "&" + Constants.QUERY_PARAM_LANGUAGE + "=" + Constants.LANGUANGE_ENGLISH;
+            String urlString = APIClient.BASE_URL + Constants.TOP_HEADLINES_API_REQUEST + "?" + Constants.QUERY_PARAM_API_KEY + "=" + Constants.API_KEY + "&" + Constants.QUERY_PARAM_LANGUAGE + "=" + Constants.LANGUAGE_ENGLISH;
             URL myUrl = new URL(urlString);
             //Create a connection
             HttpsURLConnection connection;

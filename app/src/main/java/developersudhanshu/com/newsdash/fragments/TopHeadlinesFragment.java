@@ -1,5 +1,6 @@
 package developersudhanshu.com.newsdash.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.activities.NewsDetailDisplayActivity;
 import developersudhanshu.com.newsdash.adapters.NewsHeadlineRecyclerViewAdapter;
+import developersudhanshu.com.newsdash.architecture_comp.TopHeadlinesFragmentViewModel;
+import developersudhanshu.com.newsdash.architecture_comp.TopHeadlinesFragmentViewModelFactory;
 import developersudhanshu.com.newsdash.models.Articles;
 import developersudhanshu.com.newsdash.models.NewsFeedModel;
 import developersudhanshu.com.newsdash.models.NewsHeadlineResponse;
@@ -43,6 +46,7 @@ public class TopHeadlinesFragment extends Fragment implements View.OnClickListen
     private ProgressBar loadingBar;
     private ImageView loadingLayoutImage;
     private Button retryLoadingButton;
+    private TopHeadlinesFragmentViewModel viewModel;
 
     public TopHeadlinesFragment(){
 
@@ -70,21 +74,33 @@ public class TopHeadlinesFragment extends Fragment implements View.OnClickListen
 
         apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
 
-        getTopHeadlines();
+        // Creating the View Model
+        TopHeadlinesFragmentViewModelFactory factory = new TopHeadlinesFragmentViewModelFactory(mNewsFeeds);
+        viewModel = ViewModelProviders.of(getActivity(), factory).get(TopHeadlinesFragmentViewModel.class);
+        if (viewModel.getmNewsFeeds() == null || viewModel.getmNewsFeeds().size() == 0) {
+            getTopHeadlines();
+        } else {
+            loadingLayout.setVisibility(View.INVISIBLE);
+            mNewsFeeds.clear();
+            mNewsFeeds.addAll(viewModel.getmNewsFeeds());
+            adapter.notifyDataSetChanged();
+        }
 
         return view;
     }
 
     private void getTopHeadlines() {
 
-        apiInterface.getTopNewsHeadlines(Constants.COUNTRY_INDIA, Constants.API_KEY, Constants.LANGUANGE_ENGLISH, null, null)
+        apiInterface.getTopNewsHeadlines(Constants.COUNTRY_INDIA, Constants.API_KEY, Constants.LANGUAGE_ENGLISH, null, null)
                     .enqueue(new Callback<NewsHeadlineResponse>() {
                         @Override
                         public void onResponse(Call<NewsHeadlineResponse> call, Response<NewsHeadlineResponse> response) {
                             if (response.isSuccessful()) {
                                 loadingLayout.setVisibility(View.INVISIBLE);
+                                mNewsFeeds.clear();
+                                ArrayList<NewsFeedModel> news = new ArrayList<>();
                                 for(Articles articles: response.body().getArticles()){
-                                    mNewsFeeds.add(new NewsFeedModel(articles.getTitle(),
+                                    news.add(new NewsFeedModel(articles.getTitle(),
                                                     articles.getPublishedAt(),
                                                     articles.getUrlToImage(),
                                                     articles.getAuthor(),
@@ -92,6 +108,8 @@ public class TopHeadlinesFragment extends Fragment implements View.OnClickListen
                                                     articles.getSource().getName(),
                                                     articles.getUrl()));
                                 }
+                                viewModel.setmNewsFeeds(news);
+                                mNewsFeeds.addAll(viewModel.getmNewsFeeds());
                                 Log.d("News Data:", response.body().toString());
                                 adapter.notifyDataSetChanged();
                             } else {
