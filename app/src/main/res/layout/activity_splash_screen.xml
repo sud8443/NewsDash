@@ -4,17 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccentGrey"
     tools:context=".activities.SplashScreen">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <ImageView
+        android:id="@+id/img_view_splash_screen"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:textSize="18sp"
-        android:text="Splash Screen"
-        android:gravity="center"
+        android:background="@drawable/splash_screen_img_back"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/splash_screen_img_desc"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/guideline"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/raleway_black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_view_splash_screen"/>
 </android.support.constraint.ConstraintLayout>

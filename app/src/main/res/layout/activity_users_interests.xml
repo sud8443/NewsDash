@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/blue_background_scrim"
     tools:context=".activities.UsersInterestsActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Your Interests:"
+        android:text="@string/splash_screen_choose_interests"
         android:gravity="center"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"/>
+        style="@style/SplashScreenTextViewStyle"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_interest_choices_act_user_interests"
@@ -26,26 +25,27 @@
         android:id="@+id/tv_selected_choices_act_user_interests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:text="@string/splash_screen_no_choices_selected"
         android:gravity="center"
-        android:padding="10dp"
-        android:textSize="18sp"/>
+        style="@style/SplashScreenTextViewStyle"/>
 
     <TextView
         android:id="@+id/tv_choice_count_act_user_interests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="2dp"
         android:gravity="center"
-        android:padding="10dp"
-        android:textSize="18sp"/>
+        android:text="@string/splash_screen_choices_count_text"
+        style="@style/SplashScreenTextViewStyle"/>
 
 
     <Button
         android:id="@+id/btn_next_act_user_interests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NEXT"
-        android:layout_marginTop="10dp"/>
+        style="@style/BottomSheetButtonStyle"
+        android:drawableEnd="@drawable/ic_arrow_right_24dp"
+        android:text="@string/splash_screen_next_btn"
+        android:layout_marginTop="2dp"/>
 
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,16 +58,19 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_your_feed, container, false);
 
         setUpViews(view);
+        YourFeedsFragmentViewModelFactory factory = new YourFeedsFragmentViewModelFactory(mNewsFeeds, selectedChoice);
+        viewModel = ViewModelProviders.of(getActivity(), factory).get(YourFeedsFragmentViewModel.class);
         if (savedInstanceState == null) {
-            selectedChoice = choiceOne.getText().toString();
+            if (!TextUtils.isEmpty(viewModel.getSelectedChoice()))
+                selectedChoice = viewModel.getSelectedChoice();
+            else
+                selectedChoice = choiceOne.getText().toString();
         } else {
             selectedChoice = savedInstanceState.getString(Constants.FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY);
         }
         changeButtonBackgroundToSelected(selectedChoice, getResources().getColor(R.color.yellow));
         apiInterface = APIClient.getRetrofitClient().create(APIInterface.class);
 
-        YourFeedsFragmentViewModelFactory factory = new YourFeedsFragmentViewModelFactory(mNewsFeeds);
-        viewModel = ViewModelProviders.of(getActivity(), factory).get(YourFeedsFragmentViewModel.class);
         if (viewModel.getmNewsFeeds() == null || viewModel.getmNewsFeeds().size() == 0) {
             makeNetworkRequestForNewsHeadlines(selectedChoice);
         } else{
@@ -187,6 +191,7 @@ public class YourFeedFragment extends Fragment implements View.OnClickListener {
                 makeNetworkRequestForNewsHeadlines(selectedChoice);
                 break;
         }
+        viewModel.setSelectedChoice(selectedChoice);
     }
 
     @Override

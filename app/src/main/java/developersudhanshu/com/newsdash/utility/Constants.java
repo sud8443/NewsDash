@@ -34,6 +34,12 @@ public abstract class Constants {
     public static final String CURRENTLY_DISPLAYED_FRAGMENT_KEY = "CurrentlyDisplayedFragment";
     public static final String FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY = "YourFeedsSelectedChoice";
 
+    // User Interests Activity Key
+    public static final String CHOICE_COUNT_TEXT_VIEW_KEY = "ChoicesCountTextViewKey";
+    public static final String USER_INTERESTS_TEXT_VIEW_KEY = "UserInterestsTextViewKey";
+    public static final String USER_CHOICES_KEY = "UserChoicesKey";
+    public static final String RECYCLER_VIEW_STATE_KEY = "RecyclerViewStateKey";
+
     // Shared Preferences constants and key
     public static final String SHARED_PREFERENCE_NAME = "NewsDashSharedPreference";
     public static final String IS_FIRST_LAUNCH_KEY = "IsFirstLaunchKey";

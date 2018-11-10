@@ -13,11 +13,17 @@
     <string name="author_label">Author</string>
     <string name="description_label">Description</string>
 
+    // TextView text messages
+    <string name="splash_screen_choose_interests">Choose Your Interests:</string>
+    <string name="splash_screen_no_choices_selected">No choices selected yet</string>
+    <string name="splash_screen_choices_count_text">3 more choices to go!</string>
+
     // Image View content description
     <string name="content_description_user_interest_image">Interest Type item image</string>
     <string name="no_favorites_found">No Favorites</string>
     <string name="loading_news_feeds">Loading feeds…</string>
     <string name="error_loading_feeds">Error occurred</string>
+    <string name="splash_screen_img_desc">Image displaying a new paper</string>
 
     // Button text
     <string name="retry_btn_text">Retry</string>
@@ -26,6 +32,7 @@
     <string name="choice_one">Choice 1</string>
     <string name="choice_two">Choice 2</string>
     <string name="choice_three">Choice 3</string>
+    <string name="splash_screen_next_btn">Next</string>
 
     // Empty Data messages
     <string name="no_description_message">No description available</string>

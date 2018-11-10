@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,12 +32,18 @@ public class UsersInterestsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users_interests);
 
         setUpViews();
+        if (savedInstanceState != null) {
+            userChoices = savedInstanceState.getStringArrayList(Constants.USER_CHOICES_KEY);
+            choiceCount.setText(savedInstanceState.getString(Constants.CHOICE_COUNT_TEXT_VIEW_KEY));
+            selectedChoices.setText(savedInstanceState.getString(Constants.USER_INTERESTS_TEXT_VIEW_KEY));
+            userInterestChoices.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(Constants.RECYCLER_VIEW_STATE_KEY));
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setUpViews() {
 
         // Initializing users choices
-        // TODO: It should be fetched from the shared preferences
         userChoices = new ArrayList<>();
 
         choiceCount = findViewById(R.id.tv_choice_count_act_user_interests);
@@ -44,7 +51,7 @@ public class UsersInterestsActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.btn_next_act_user_interests);
 
         userInterestChoices = findViewById(R.id.rv_interest_choices_act_user_interests);
-        adapter = new UserInterestsRecyclerViewAdapter(this, Constants.userInterests);
+        adapter = new UserInterestsRecyclerViewAdapter(this, Constants.userInterests, userChoices);
         userInterestChoices.setAdapter(adapter);
         userInterestChoices.setLayoutManager(new GridLayoutManager(this, 2));
 
@@ -61,13 +68,15 @@ public class UsersInterestsActivity extends AppCompatActivity {
                 }
                 StringBuilder choicesString = new StringBuilder();
                 for (String choice : userChoices) {
-                    choicesString.append(choice + ",");
+                    choicesString.append(choice);
+                    choicesString.append("   ");
                 }
                 if (userChoices.size() > 0)
                     selectedChoices.setText(choicesString.toString());
                 else
-                    selectedChoices.setText("No choices selected yet");
+                    selectedChoices.setText(getResources().getString(R.string.splash_screen_no_choices_selected));
                 choiceCount.setText(String.valueOf(3 - userChoices.size()) + " more choices to go!");
+                adapter.notifyItemChanged(position);
             }
         });
 
@@ -84,5 +93,14 @@ public class UsersInterestsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(Constants.USER_CHOICES_KEY, userChoices);
+        outState.putString(Constants.CHOICE_COUNT_TEXT_VIEW_KEY, choiceCount.getText().toString());
+        outState.putString(Constants.USER_INTERESTS_TEXT_VIEW_KEY, selectedChoices.getText().toString());
+        outState.putParcelable(Constants.RECYCLER_VIEW_STATE_KEY, userInterestChoices.getLayoutManager().onSaveInstanceState());
     }
 }

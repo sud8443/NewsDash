@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -17,6 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
+        android:id="@+id/view_item_user_interest_background_scrim"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/blue_background_scrim"
