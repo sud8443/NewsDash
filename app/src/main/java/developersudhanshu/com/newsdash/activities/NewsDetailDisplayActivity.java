@@ -75,7 +75,6 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
         news.observe(this, new Observer<NewsHeadlineEntity>() {
             @Override
             public void onChanged(@Nullable NewsHeadlineEntity headlineEntity) {
-//                news.removeObserver(this);
                 if (headlineEntity == null) {
                     markUnFav();
                 } else {

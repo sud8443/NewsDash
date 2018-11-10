@@ -77,7 +77,7 @@ public class TopHeadlinesFragment extends Fragment implements View.OnClickListen
 
     private void getTopHeadlines() {
 
-        apiInterface.getTopNewsHeadlines("in", Constants.API_KEY, "en", null, null)
+        apiInterface.getTopNewsHeadlines(Constants.COUNTRY_INDIA, Constants.API_KEY, Constants.LANGUANGE_ENGLISH, null, null)
                     .enqueue(new Callback<NewsHeadlineResponse>() {
                         @Override
                         public void onResponse(Call<NewsHeadlineResponse> call, Response<NewsHeadlineResponse> response) {

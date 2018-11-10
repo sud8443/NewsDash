@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import developersudhanshu.com.newsdash.R;
+import developersudhanshu.com.newsdash.services.NewsUpdateService;
 import developersudhanshu.com.newsdash.utility.Utility;
 
 public class SplashScreen extends AppCompatActivity {
@@ -14,6 +15,9 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        // Reloading the Widget to show the updated news every time the app is opened
+        NewsUpdateService.startActionNewsWidgetUpdate(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override

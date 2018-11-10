@@ -31,4 +31,8 @@
     <string name="no_description_message">No description available</string>
     <string name="no_author_message">Author unknown</string>
     <string name="no_source_available">Unknown source</string>
+    <string name="appwidget_news_headline_text">News Headlines</string>
+    <string name="appwidget_news_date_text">News Date</string>
+    <string name="appwidget_image_desc">Widget news image</string>
+    <string name="add_widget">Add widget</string>
 </resources>

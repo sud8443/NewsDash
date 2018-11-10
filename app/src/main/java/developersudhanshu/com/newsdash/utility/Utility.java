@@ -49,13 +49,21 @@ public class Utility {
     }
 
     public static String getDateInReadableFormat(String date) {
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat inputDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd MMMM yyyy");
         Date d = null;
         try {
             d = inputDateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if (d == null) {
+            try {
+                d = inputDateFormat2.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return d != null ? outputDateFormat.format(d):date;
     }

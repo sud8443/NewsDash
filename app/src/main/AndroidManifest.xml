@@ -13,8 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.NewsDisplayActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".activities.NewsDetailDisplayActivity"
             android:theme="@style/NewsDetailsDisplayTheme" />
@@ -31,6 +30,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".widget.NewsWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/news_widget_provider_info" />
+        </receiver>
+
+        <service android:name=".services.NewsUpdateService"
+            android:exported="false" />
     </application>
 
 </manifest>
