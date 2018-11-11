@@ -2,16 +2,43 @@ package developersudhanshu.com.newsdash.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.design.widget.BottomSheetDialog;
 import android.util.Log;
+import android.view.View;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import developersudhanshu.com.newsdash.R;
+
 public class Utility {
 
     private static SharedPreferences sp;
+    private static BottomSheetDialog bottomSheetDialog;
+
+    public static void createInternetNotAvailableDialog(Context context){
+        bottomSheetDialog = new BottomSheetDialog(context);
+        View v = View.inflate(context, R.layout.bottom_sheet_internet_not_connected_layout, null);
+        bottomSheetDialog.setContentView(v);
+    }
+
+    public static boolean isInternetNotAvailableDialogCreated() {
+        return bottomSheetDialog != null;
+    }
+
+    public static void displayBottomSheetDialog(){
+        if(bottomSheetDialog != null)
+            bottomSheetDialog.show();
+    }
+
+    public static void dismissBottomSheetDialog(){
+        if(bottomSheetDialog != null)
+            bottomSheetDialog.dismiss();
+    }
 
     public static boolean getIsFirstLaunch(Context context) {
         if (sp == null)
@@ -46,6 +73,15 @@ public class Utility {
                 add(Constants.CATEGORY_TRAVEL);
             }};
         }
+    }
+
+    public static boolean checkInternetConnection(Context context){
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 
     public static String getDateInReadableFormat(String date) {

@@ -34,6 +34,8 @@ public abstract class Constants {
     public static final String CURRENTLY_DISPLAYED_FRAGMENT_KEY = "CurrentlyDisplayedFragment";
     public static final String FRAGMENT_YOUR_FEEDS_SELECTED_CHOICE_KEY = "YourFeedsSelectedChoice";
 
+    public final static String CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+
     // User Interests Activity Key
     public static final String CHOICE_COUNT_TEXT_VIEW_KEY = "ChoicesCountTextViewKey";
     public static final String USER_INTERESTS_TEXT_VIEW_KEY = "UserInterestsTextViewKey";

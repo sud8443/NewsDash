@@ -1,5 +1,6 @@
 package developersudhanshu.com.newsdash.activities;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,7 +13,9 @@ import developersudhanshu.com.newsdash.fragments.FavoritesFragment;
 import developersudhanshu.com.newsdash.fragments.SearchFragment;
 import developersudhanshu.com.newsdash.fragments.TopHeadlinesFragment;
 import developersudhanshu.com.newsdash.fragments.YourFeedFragment;
+import developersudhanshu.com.newsdash.receivers.NetworkChangeReceiver;
 import developersudhanshu.com.newsdash.utility.Constants;
+import developersudhanshu.com.newsdash.utility.Utility;
 
 public class NewsDisplayActivity extends AppCompatActivity {
 
@@ -22,6 +25,9 @@ public class NewsDisplayActivity extends AppCompatActivity {
     private FavoritesFragment favoritesFragment;
     private SearchFragment searchFragment;
     private static String currentlyDisplayedFragment;
+    private NetworkChangeReceiver networkChangeReceiver;
+    private IntentFilter networkIntentFilter;
+    private static boolean wasNetworkConnected;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,8 +113,46 @@ public class NewsDisplayActivity extends AppCompatActivity {
             currentlyDisplayedFragment = savedInstanceState.getString(Constants.CURRENTLY_DISPLAYED_FRAGMENT_KEY);
         }
 
+        setupNetworkStateReceiver();
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkChangeReceiver, networkIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+    private void setupNetworkStateReceiver() {
+        networkChangeReceiver = new NetworkChangeReceiver();
+
+        networkIntentFilter = new IntentFilter();
+        networkIntentFilter.addAction(Constants.CONNECTIVITY_ACTION);
+
+        wasNetworkConnected = false;
+
+        networkChangeReceiver.setNetworkStateListener(new NetworkChangeReceiver.NetworkStateListener() {
+            @Override
+            public void networkStateConnected(boolean status) {
+                if (!status && wasNetworkConnected) {
+                    if (!Utility.isInternetNotAvailableDialogCreated())
+                        Utility.createInternetNotAvailableDialog(NewsDisplayActivity.this);
+                    Utility.displayBottomSheetDialog();
+                    wasNetworkConnected = !wasNetworkConnected;
+                } else if (status){
+                    wasNetworkConnected = true;
+                    Utility.dismissBottomSheetDialog();
+                }
+            }
+        });
     }
 
     private void setFragmentCorrespondingToStringValue(String value) {

@@ -18,6 +18,8 @@
     <string name="splash_screen_no_choices_selected">No choices selected yet</string>
     <string name="splash_screen_choices_count_text">3 more choices to go!</string>
 
+    <string name="internet_conn_not_available">Connection Lost.</string>
+
     // Image View content description
     <string name="content_description_user_interest_image">Interest Type item image</string>
     <string name="no_favorites_found">No Favorites</string>
