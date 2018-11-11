@@ -88,26 +88,17 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
     private void markFav() {
         newsIsFav = true;
         final Drawable drawable = getDrawable(R.drawable.ic_favorite_24dp);
+        assert drawable != null;
         drawable.setTint(getResources().getColor(android.R.color.holo_red_dark));
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                markFavoriteStory.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
-            }
-        });
-        Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+        markFavoriteStory.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     }
 
     private void markUnFav() {
         newsIsFav = false;
-        Drawable drawable = getDrawable(R.drawable.ic_favorite_24dp);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                markFavoriteStory.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_24dp, 0, 0);
-            }
-        });
-        Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+        final Drawable drawable = getDrawable(R.drawable.ic_favorite_24dp);
+        assert drawable != null;
+        drawable.setTint(getResources().getColor(android.R.color.white));
+        markFavoriteStory.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     }
 
     @Override
@@ -180,20 +171,19 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
                                 model.getDescription(), model.getNewsSource(), model.getNewsUrl());
                         if (newsIsFav) {
                             mDb.getNewsHeadlinesDao().deleteNewsHeadline(mNewsEntity);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    markUnFav();
-//                                }
-//                            });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NewsDetailDisplayActivity.this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         } else {
                             mDb.getNewsHeadlinesDao().insertNewsHeadline(entity);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    markFav();
-//                                }
-//                            });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NewsDetailDisplayActivity.this, "Added to Favorites", Toast.LENGTH_SHORT).show();                                }
+                            });
                         }
                     }
                 });
