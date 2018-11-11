@@ -26,6 +26,9 @@
     <string name="loading_news_feeds">Loading feeds…</string>
     <string name="error_loading_feeds">Error occurred</string>
     <string name="splash_screen_img_desc">Image displaying a new paper</string>
+    <string name="no_favorites_content_desc">Image to display no favorite items</string>
+    <string name="loading_failed_image_content_desc">Error image when loading failed</string>
+    <string name="widget_image_scrim_content_desc">Widget Image background scrim</string>
 
     // Button text
     <string name="retry_btn_text">Retry</string>

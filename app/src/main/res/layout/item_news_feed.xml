@@ -40,43 +40,4 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!--<android.support.constraint.ConstraintLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<ImageView-->
-            <!--android:id="@+id/img_view_news_image"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:scaleType="centerInside"-->
-            <!--android:contentDescription="@string/news_image_content_desc"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--app:layout_constraintBottom_toTopOf="@id/guideline1"/>-->
-
-        <!--<android.support.constraint.Guideline-->
-            <!--android:id="@+id/guideline1"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="2dp"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintGuide_percent="0.7"-->
-            <!--android:orientation="horizontal"/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/tv_news_title"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/guideline1"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintRight_toRightOf="parent"/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/tv_news_date"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/tv_news_title"/>-->
-    <!--</android.support.constraint.ConstraintLayout>-->
 </android.support.v7.widget.CardView>

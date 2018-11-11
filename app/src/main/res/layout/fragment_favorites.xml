@@ -19,6 +19,7 @@
             android:id="@+id/img_view_fav_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/no_favorites_content_desc"
             android:src="@drawable/fav_icon"
             android:layout_gravity="center"/>
 
