@@ -23,6 +23,11 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="@string/FABRIC_API_KEY"
+            />
+
         <activity android:name=".activities.UsersInterestsActivity" />
         <activity android:name=".activities.SplashScreen">
             <intent-filter>

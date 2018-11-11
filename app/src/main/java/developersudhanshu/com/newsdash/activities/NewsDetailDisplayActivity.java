@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import developersudhanshu.com.newsdash.R;
@@ -42,6 +44,7 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
     private NewsFeedModel model;
     private boolean newsIsFav;
     private NewsHeadlineEntity mNewsEntity;
+    private AdView bannerAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +151,11 @@ public class NewsDetailDisplayActivity extends AppCompatActivity implements View
         newsDescription = findViewById(R.id.tv_desc_act_news_detail_display);
         newsImage = findViewById(R.id.img_view_act_news_detail);
         newsSource = findViewById(R.id.tv_source_act_news_detail_display);
+        bannerAd = findViewById(R.id.banner_ad_act_news_detail_display);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bannerAd.loadAd(adRequest);
 
         markFavoriteStory = findViewById(R.id.btn_mark_fav_act_news_details_display);
         shareStory = findViewById(R.id.btn_share_act_news_details_display);

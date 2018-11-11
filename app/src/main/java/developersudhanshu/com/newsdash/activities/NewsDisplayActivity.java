@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
+
 import developersudhanshu.com.newsdash.R;
 import developersudhanshu.com.newsdash.fragments.FavoritesFragment;
 import developersudhanshu.com.newsdash.fragments.SearchFragment;
@@ -16,6 +18,7 @@ import developersudhanshu.com.newsdash.fragments.YourFeedFragment;
 import developersudhanshu.com.newsdash.receivers.NetworkChangeReceiver;
 import developersudhanshu.com.newsdash.utility.Constants;
 import developersudhanshu.com.newsdash.utility.Utility;
+import io.fabric.sdk.android.Fabric;
 
 public class NewsDisplayActivity extends AppCompatActivity {
 
@@ -114,6 +117,9 @@ public class NewsDisplayActivity extends AppCompatActivity {
         }
 
         setupNetworkStateReceiver();
+
+        // Initialising Fabric Crashlytics in my app
+        Fabric.with(this, new Crashlytics());
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
